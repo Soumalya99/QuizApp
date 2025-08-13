@@ -19,7 +19,7 @@ export default function QuestionCard (
   } : QuestionCardProps) {
 
   const getButtonClass = (idx: number): string => {
-    if(selectedAnswer === null) return "bg-gray-200";
+    if(selectedAnswer === null) return "bg-gray-200 border border-gray-500";
     if(idx === questions.correct) return "bg-green-200 hover:bg-green-300 border border-green-500";
     if(selectedAnswer === idx) return "bg-red-200 hover:bg-red-400 border border-red-500";
     return "opacity-60";
@@ -43,16 +43,18 @@ export default function QuestionCard (
             onClick={() => selectedAnswer === null && handleAnswer(idx)}
             key={idx}
             className={`block w-full text-left p-3 rounded-md outline-none 
-            transition-all duration-300 ${getButtonClass(idx)}`}
+            transition-all duration-300 ${getButtonClass(idx)} hover:shadow-lg focus:shadow-lg `}
           >
             <div className="flex items-center justify-between">
-              <span className="italic">{option}</span>
-              {selectedAnswer !== null && idx === questions.correct && (
-                <CheckSquareIcon className="w-5 h-5 text-green-700" />
-              )}
-              {selectedAnswer !== null && idx !== questions.correct && (
-                <BadgeXIcon className="w-5 h-5 text-red-700" />
-              )}
+              <span className="italic flex-1">{option}</span>
+              <span className="flex-shrink-0 flex items-center pl-2">
+                {selectedAnswer !== null && idx === questions.correct && (
+                  <CheckSquareIcon className="w-5 h-5 text-green-700" />
+                )}
+                {selectedAnswer !== null && idx !== questions.correct && (
+                  <BadgeXIcon className="w-5 h-5 text-red-700" />
+                )}
+              </span>
             </div>
           </button>
         ))}

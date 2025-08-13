@@ -6,7 +6,7 @@ import Timer from "./components/Timer";
 import { QUESTIONS } from "./data/questions";
 
 import type { GameState } from "./types/types";
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 
 function App(){
@@ -38,10 +38,20 @@ function App(){
           setSelectedAnswer(null);
         }
       },1500)
-    }
+    };
+
+    const handleTimeUp = useCallback(() => {
+      if(currentQuestion < QUESTIONS.length - 1){
+        setCurrentQuestion(prev => prev + 1);
+        setSelectedAnswer(null);
+      }else{
+        setGameState("finished");
+        setSelectedAnswer(null);
+      }
+    },[currentQuestion]);
 
     return (
-      <div className="in-h-screen  py-14 flex items-center justify-center lg:px-8 sm:px-6 bg-gray-500 min-h-screen">
+      <div className="min-h-screen  py-14 flex items-center justify-center lg:px-8 sm:px-6 bg-gray-500">
         <div className="max-w-md mx-auto bg-gradient-to-b from-yellow-300 to-blue-400 rounded-xl shadow-md overflow-hidden p-12">
           {GameState === "start" && (
             <StartScreen onStart={handleStart} />
@@ -49,6 +59,7 @@ function App(){
           {GameState === "playing" && (
             <div className="py-8">
               <Timer 
+              onTimeUp={handleTimeUp}
               questionId={currentQuestion}
               />
               <QuestionCard 
